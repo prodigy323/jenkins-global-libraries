@@ -4,11 +4,40 @@ def call(config = [:]) {
     def credentialsId = config.credentialsId
     def settingsXml = config.settingsXml
     def skipTest = config.skipTest ?: false
-
+    def gitUrl = config.gitUrl
     def pom = readMavenPom file: 'pom.xml'
 
-    withCredentials([string(credentialsId: "${credentialsId}", variable: 'TOKEN')]) {
-        return sh(script: "mvn -B -DskipTests=${skipTest} release:prepare release:perform", returnStdout: true)
+    assert pom
+    assert gitUrl
+    assert credentialsId
+
+    pipeline {
+        agent { label 'docker-maven-slave' }
+        stages {
+            stage('Clean Workspace') {
+                steps {
+                    cleanWs()
+                }
+            }
+            stage('Checkout SCM') {
+                steps {
+                    checkout([$class: 'GitSCM',
+                              branches: [[name: '*/master']],
+                              doGenerateSubmoduleConfigurations: false,
+                              extensions: [[$class: 'LocalBranch', localBranch: '**']],
+                              submoduleCfg: [],
+                              userRemoteConfigs: [[credentialsId: "${credentialsId}", url: "${gitUrl}"]]
+                    ])
+                }
+            }
+            stage('Create Release') {
+                steps {
+                    withCredentials([string(credentialsId: "${credentialsId}", variable: 'TOKEN')]) {
+                        return sh(script: "mvn -B -s ${settingsXml} -DskipTests=${skipTest} release:prepare release:perform", returnStdout: true)
+                    }
+                }
+            }
+        }
     }
 
 }
