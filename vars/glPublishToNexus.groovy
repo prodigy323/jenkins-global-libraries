@@ -7,7 +7,7 @@ def call(config = [:]) {
 
     def pom = readMavenPom file: 'pom.xml'
 
-    withCredentials([string(credentialsId: "${credentialsId}", variable: 'TOKEN')]) {
+    withCredentials([usernamePassword(credentialsId: "${credentialsId}", usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
         return sh(script: "mvn -B -DskipTests=${skipTest} -s ${settingsXml} deploy", returnStdout: true)
     }
 
