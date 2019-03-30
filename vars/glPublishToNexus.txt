@@ -1,5 +1,4 @@
-# glPublishToNexus
-## Global variable to publish artifact to Nexus
+Global variable to publish artifact to Nexus
 
 **credentialsId**
 string value for Nexus credentials

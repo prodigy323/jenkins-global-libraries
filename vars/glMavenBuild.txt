@@ -1,5 +1,4 @@
-# glMavenBuild
-## Global variable to execute a maven build
+Global variable to execute a maven build
 
 **skipTest**
 boolean value to specify whether to skip a maven unit test, default false
