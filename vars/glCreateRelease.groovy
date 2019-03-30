@@ -33,7 +33,7 @@ def call(config = [:]) {
                 steps {
                     script {
                         withCredentials([string(credentialsId: "${credentialsId}", variable: 'TOKEN')]) {
-                            return sh(script: "mvn -B -s ${settingsXml} -DskipTests=${skipTest} release:prepare release:perform", returnStdout: true)
+                            return sh(script: "mvn -B -s ${settingsXml} -DskipTests=${skipTest} -DscmCommentPrefix="[ci skip] " release:prepare release:perform", returnStdout: true)
                         }
                     }
                 }
