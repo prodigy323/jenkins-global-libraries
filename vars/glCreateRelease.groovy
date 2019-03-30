@@ -6,6 +6,7 @@ def call(config = [:]) {
     def skipTest = config.skipTest ?: false
     def gitUrl = config.gitUrl
 
+    println "git url: " + gitUrl
     assert gitUrl
     assert credentialsId
 
