@@ -1,0 +1,11 @@
+# glPublishToNexus
+## Global variable to publish artifact to Nexus
+
+**credentialsId**
+string value for Nexus credentials
+
+**settingsXml**
+string value to specify custom maven settings.xml to use
+
+**skipTest**
+boolean value to specify whether to skip a maven unit test, default false

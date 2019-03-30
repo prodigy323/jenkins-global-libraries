@@ -1,0 +1,13 @@
+Global variable to create a non-snapshot release
+
+**credentialsId**
+string value for Nexus credentials
+
+**settingsXml**
+string value to specify custom maven settings.xml to use
+
+**skipTest**
+boolean value to specify whether to skip a maven unit test, default false
+
+**gitUrl**
+string value to specify the git repo to create a release from
