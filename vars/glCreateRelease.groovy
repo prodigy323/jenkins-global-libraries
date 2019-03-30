@@ -5,9 +5,8 @@ def call(config = [:]) {
     def settingsXml = config.settingsXml
     def skipTest = config.skipTest ?: false
     def gitUrl = config.gitUrl
-    def pom = readMavenPom file: 'pom.xml'
+    def pom
 
-    assert pom
     assert gitUrl
     assert credentialsId
 
@@ -33,6 +32,8 @@ def call(config = [:]) {
             stage('Create Release') {
                 steps {
                     script {
+                        pom = readMavenPom file: 'pom.xml'
+                        assert pom
                         withCredentials([string(credentialsId: "${credentialsId}", variable: 'TOKEN')]) {
                             return sh(script: "mvn -B -s ${settingsXml} -DskipTests=${skipTest} release:prepare release:perform", returnStdout: true)
                         }
