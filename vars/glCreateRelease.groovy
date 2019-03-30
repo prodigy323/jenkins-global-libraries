@@ -32,8 +32,10 @@ def call(config = [:]) {
             }
             stage('Create Release') {
                 steps {
-                    withCredentials([string(credentialsId: "${credentialsId}", variable: 'TOKEN')]) {
-                        return sh(script: "mvn -B -s ${settingsXml} -DskipTests=${skipTest} release:prepare release:perform", returnStdout: true)
+                    script {
+                        withCredentials([string(credentialsId: "${credentialsId}", variable: 'TOKEN')]) {
+                            return sh(script: "mvn -B -s ${settingsXml} -DskipTests=${skipTest} release:prepare release:perform", returnStdout: true)
+                        }
                     }
                 }
             }
